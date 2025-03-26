@@ -33,3 +33,15 @@ type BootcampRegistration @entity {
   org_address: String!
   bootcamp_id: BigInt!
 }
+
+type RegistrationApproved @entity {
+  id: ID!
+  student_address: String!
+  bootcamp_id: BigInt!
+}
+
+type RegistrationDeclined @entity {
+  id: ID!
+  student_address: String!
+  bootcamp_id: BigInt!
+}
