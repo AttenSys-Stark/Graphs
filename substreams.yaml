@@ -1,0 +1,53 @@
+specVersion: v0.1.0
+package:
+  name: attensysgraph
+  version: v0.1.0
+
+imports:
+  starknet: https://spkg.io/streamingfast/starknet-foundational-v0.1.4.spkg
+
+protobuf:
+  files:
+    - events.proto
+  importPaths:
+    - ./proto
+
+  excludePaths:
+    - sf/substreams/index
+    - sf/substreams/rpc
+    - sf/substreams/sink
+    - sf/substreams/v1
+    - google
+
+binaries:
+  default:
+    type: wasm/rust-v1+wasm-bindgen-shims
+    file: ./target/wasm32-unknown-unknown/release/substreams.wasm
+
+modules:
+- name: map_orgsubgraph_events
+  kind: map
+  initialBlock: 594924
+  inputs:
+    - map: starknet:filtered_transactions
+  output:
+   type: proto:starknet.v1.Events
+- name: map_eventsubgraph_events
+  kind: map
+  initialBlock: 594469
+  inputs:
+    - map: starknet:filtered_transactions
+  output:
+   type: proto:starknet.v1.Events
+- name: map_coursesubgraph_events
+  kind: map
+  initialBlock: 596796
+  inputs:
+    - map: starknet:filtered_transactions
+  output:
+   type: proto:starknet.v1.Events
+
+network: starknet-testnet
+
+params:
+  starknet:filtered_transactions: ev:from_address:0x03454c358e5cd9cb1a445b0972a521adbcf06cedf547d43e7d56f8ed8e240bbc || ev:from_address:0x01047113eea577a1230dc04b5085a94fb4ef01a5b68d2652492cd5deeb361f75 || ev:from_address:0x027da6130567c2cc618a7a6d3e2dc463ecdac1ee6f77a1a07310510e76459093
