@@ -3,7 +3,7 @@ import { Events as protoEvents } from "./pb/starknet/v1/Events";
 import { myEntity, OrganizationProfile, 
   InstructorAddedToOrg, 
   InstructorRemovedFromOrg, 
-  BootCampCreated } from "../generated/schema";
+  BootCampCreated, BootcampRegistration, RegistrationApproved, RegistrationDeclined } from "../generated/schema";
 import { BigInt, log, crypto, Bytes, json } from "@graphprotocol/graph-ts";
 
 export function handleTriggers(bytes: Uint8Array): void {
@@ -133,6 +133,62 @@ export function handleTriggers(bytes: Uint8Array): void {
      // Handle BootcampRegistration event
      if (jsonObj.get("BootcampRegistration")) {
        const bootcampregistration = jsonObj.get("BootcampRegistration")!.toObject();
+       const orgaddress = bootcampregistration.get("org_address")!.toString();
+       const bootcampIdValue = bootcampregistration.get("bootcamp_id")!;
+
+       const bootcampId = BigInt.fromString(bootcampIdValue.toU64().toString());
+       const eventID = crypto
+      .keccak256(Bytes.fromUTF8(event.jsonDescription))
+      .toHexString();
+
+       let registration = BootcampRegistration.load(eventID)
+       if (!registration) {
+        registration = new BootcampRegistration(eventID);
+      }
+      registration.bootcamp_id = bootcampId
+      registration.org_address = orgaddress
+
+      registration.save();
+     }
+
+     if (jsonObj.get("RegistrationApproved")) {
+      const regApproval = jsonObj.get("RegistrationApproved")!.toObject();
+      const studentaddress = regApproval.get("student_address")!.toString();
+      const bootcampIdValue = regApproval.get("bootcamp_id")!;
+      const bootcampId = BigInt.fromString(bootcampIdValue.toU64().toString());
+       const eventID = crypto
+      .keccak256(Bytes.fromUTF8(event.jsonDescription))
+      .toHexString();
+
+      let approval = RegistrationApproved.load(eventID)
+       if (!approval) {
+        approval = new RegistrationApproved(eventID);
+      }
+      approval.bootcamp_id = bootcampId
+      approval.student_address = studentaddress
+
+      approval.save();
+
+     }
+
+     if (jsonObj.get("RegistrationDeclined")) {
+      const regApproval = jsonObj.get("RegistrationDeclined")!.toObject();
+      const studentaddress = regApproval.get("student_address")!.toString();
+      const bootcampIdValue = regApproval.get("bootcamp_id")!;
+      const bootcampId = BigInt.fromString(bootcampIdValue.toU64().toString());
+       const eventID = crypto
+      .keccak256(Bytes.fromUTF8(event.jsonDescription))
+      .toHexString();
+
+      let rejection = RegistrationDeclined.load(eventID)
+       if (!rejection) {
+        rejection = new RegistrationDeclined(eventID);
+      }
+      rejection.bootcamp_id = bootcampId
+      rejection.student_address = studentaddress
+
+      rejection.save();
+
      }
   }
 }

@@ -427,3 +427,143 @@ export class BootcampRegistration extends Entity {
     this.set("bootcamp_id", Value.fromBigInt(value));
   }
 }
+
+export class RegistrationApproved extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save RegistrationApproved entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type RegistrationApproved must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("RegistrationApproved", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): RegistrationApproved | null {
+    return changetype<RegistrationApproved | null>(
+      store.get_in_block("RegistrationApproved", id),
+    );
+  }
+
+  static load(id: string): RegistrationApproved | null {
+    return changetype<RegistrationApproved | null>(
+      store.get("RegistrationApproved", id),
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get student_address(): string {
+    let value = this.get("student_address");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set student_address(value: string) {
+    this.set("student_address", Value.fromString(value));
+  }
+
+  get bootcamp_id(): BigInt {
+    let value = this.get("bootcamp_id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set bootcamp_id(value: BigInt) {
+    this.set("bootcamp_id", Value.fromBigInt(value));
+  }
+}
+
+export class RegistrationDeclined extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save RegistrationDeclined entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type RegistrationDeclined must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("RegistrationDeclined", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): RegistrationDeclined | null {
+    return changetype<RegistrationDeclined | null>(
+      store.get_in_block("RegistrationDeclined", id),
+    );
+  }
+
+  static load(id: string): RegistrationDeclined | null {
+    return changetype<RegistrationDeclined | null>(
+      store.get("RegistrationDeclined", id),
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get student_address(): string {
+    let value = this.get("student_address");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set student_address(value: string) {
+    this.set("student_address", Value.fromString(value));
+  }
+
+  get bootcamp_id(): BigInt {
+    let value = this.get("bootcamp_id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set bootcamp_id(value: BigInt) {
+    this.set("bootcamp_id", Value.fromBigInt(value));
+  }
+}
