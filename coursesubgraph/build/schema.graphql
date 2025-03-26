@@ -1,3 +1,42 @@
 type MyEntity @entity {
-    id: ID!
+  id: ID!
+}
+
+type CourseCreated @entity {
+  id: ID!
+  course_identifier: BigInt!
+  owner_: String!
+  accessment_: Boolean!
+  base_uri: [String!]!
+  name_: [String!]!
+  symbol: [String!]!
+  course_ipfs_uri: [String!]!
+}
+
+type CourseReplaced @entity {
+  id: ID!
+  course_identifier: BigInt!
+  owner_: String!
+  new_course_uri: [String!]!
+}
+
+type CourseCertClaimed @entity {
+  id: ID!
+  course_identifier: BigInt!
+  candidate: String!
+}
+
+type AdminTransferred @entity {
+  id: ID!
+  new_admin: String!
+}
+
+type CourseSuspended @entity {
+  id: ID!
+  course_identifier: BigInt!
+}
+
+type CourseUnsuspended @entity {
+  id: ID!
+  course_identifier: BigInt!
 }
