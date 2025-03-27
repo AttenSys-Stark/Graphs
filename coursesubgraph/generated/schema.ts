@@ -92,19 +92,6 @@ export class CourseCreated extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get course_identifier(): BigInt {
-    let value = this.get("course_identifier");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set course_identifier(value: BigInt) {
-    this.set("course_identifier", Value.fromBigInt(value));
-  }
-
   get owner_(): string {
     let value = this.get("owner_");
     if (!value || value.kind == ValueKind.NULL) {
@@ -116,19 +103,6 @@ export class CourseCreated extends Entity {
 
   set owner_(value: string) {
     this.set("owner_", Value.fromString(value));
-  }
-
-  get accessment_(): boolean {
-    let value = this.get("accessment_");
-    if (!value || value.kind == ValueKind.NULL) {
-      return false;
-    } else {
-      return value.toBoolean();
-    }
-  }
-
-  set accessment_(value: boolean) {
-    this.set("accessment_", Value.fromBoolean(value));
   }
 
   get base_uri(): Array<string> {
@@ -225,19 +199,6 @@ export class CourseReplaced extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get course_identifier(): BigInt {
-    let value = this.get("course_identifier");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set course_identifier(value: BigInt) {
-    this.set("course_identifier", Value.fromBigInt(value));
-  }
-
   get owner_(): string {
     let value = this.get("owner_");
     if (!value || value.kind == ValueKind.NULL) {
@@ -308,19 +269,6 @@ export class CourseCertClaimed extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get course_identifier(): BigInt {
-    let value = this.get("course_identifier");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set course_identifier(value: BigInt) {
-    this.set("course_identifier", Value.fromBigInt(value));
-  }
-
   get candidate(): string {
     let value = this.get("candidate");
     if (!value || value.kind == ValueKind.NULL) {
@@ -389,117 +337,5 @@ export class AdminTransferred extends Entity {
 
   set new_admin(value: string) {
     this.set("new_admin", Value.fromString(value));
-  }
-}
-
-export class CourseSuspended extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save CourseSuspended entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type CourseSuspended must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
-      );
-      store.set("CourseSuspended", id.toString(), this);
-    }
-  }
-
-  static loadInBlock(id: string): CourseSuspended | null {
-    return changetype<CourseSuspended | null>(
-      store.get_in_block("CourseSuspended", id),
-    );
-  }
-
-  static load(id: string): CourseSuspended | null {
-    return changetype<CourseSuspended | null>(store.get("CourseSuspended", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toString();
-    }
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get course_identifier(): BigInt {
-    let value = this.get("course_identifier");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set course_identifier(value: BigInt) {
-    this.set("course_identifier", Value.fromBigInt(value));
-  }
-}
-
-export class CourseUnsuspended extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save CourseUnsuspended entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type CourseUnsuspended must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
-      );
-      store.set("CourseUnsuspended", id.toString(), this);
-    }
-  }
-
-  static loadInBlock(id: string): CourseUnsuspended | null {
-    return changetype<CourseUnsuspended | null>(
-      store.get_in_block("CourseUnsuspended", id),
-    );
-  }
-
-  static load(id: string): CourseUnsuspended | null {
-    return changetype<CourseUnsuspended | null>(
-      store.get("CourseUnsuspended", id),
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toString();
-    }
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get course_identifier(): BigInt {
-    let value = this.get("course_identifier");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set course_identifier(value: BigInt) {
-    this.set("course_identifier", Value.fromBigInt(value));
   }
 }
