@@ -6,8 +6,6 @@ import {
   CourseReplaced,
   CourseCertClaimed,
   AdminTransferred,
-  CourseSuspended,
-  CourseUnsuspended,
 } from "../generated/schema";
 import { BigInt, log, crypto, Bytes, json } from "@graphprotocol/graph-ts";
 
@@ -33,15 +31,7 @@ export function handleTriggers(bytes: Uint8Array): void {
     // Handle course created event
     if (jsonObj.get("CourseCreated")) {
       const courseCreated = jsonObj.get("CourseCreated")!.toObject();
-      const courseIdentifierValue = courseCreated.get("course_identifier")!;
-      const courseIdentifier = BigInt.fromString(
-        courseIdentifierValue.toU64().toString()
-      );
-
-
       const courseOwner = courseCreated.get("owner_")!.toString();
-
-      const courseAccessment = courseCreated.get("accessment_")!.toString();
 
       //handle base uri
       const baseUriObj = courseCreated.get("base_uri")!.toObject();
@@ -104,27 +94,102 @@ export function handleTriggers(bytes: Uint8Array): void {
       }
 
       // create course entity
-      const courseId = `${courseOwner}-${courseIdentifier}`;
-      // const courseId = crypto
-      // .keccak256(Bytes.fromUTF8(event.jsonDescription))
-      // .toHexString();
+      const courseId = crypto
+        .keccak256(Bytes.fromUTF8(event.jsonDescription))
+        .toHexString();
       let course = CourseCreated.load(courseId);
       if (!course) {
         course = new CourseCreated(courseId);
       }
 
       course.id = courseId;
-      course.course_identifier = courseIdentifier;
-      course.owner_ = courseOwner;
-      course.accessment_ = courseAccessment === "true";
-      course.base_uri = baseUris;
-      course.name_ = nameArrays;
-      course.symbol = symArrays;
-      course.course_ipfs_uri = courseIpfsUris;
+      course.owner_ = courseOwner; // address
+      course.base_uri = baseUris; // ByteArray
+      course.name_ = nameArrays; // ByteArray
+      course.symbol = symArrays; // ByteArray
+      course.course_ipfs_uri = courseIpfsUris; // ByteArray
       course.save();
     }
 
-   
+    // Handle course replaced event
+    if (jsonObj.get("CourseReplaced")) {
+      const courseReplaced = jsonObj.get("CourseReplaced")!.toObject();
+      const courseOwner = courseReplaced.get("owner_")!.toString();
+      const courseReplacedUriObj = courseReplaced
+        .get("new_course_uri")!
+        .toObject();
+      const courseReplacedUris: string[] = [];
+
+      const courseReplacedData = courseReplacedUriObj.get("data")!.toArray();
+      for (let j = 0; j < courseReplacedData.length; j++) {
+        courseReplacedUris.push(hexToString(courseReplacedData[j].toString()));
+      }
+
+      // Process pending word if exists
+      const courseReplacedPendingWord = courseReplacedUriObj.get(
+        "pending_word"
+      );
+      if (courseReplacedPendingWord) {
+        courseReplacedUris.push(
+          hexToString(courseReplacedPendingWord.toString())
+        );
+      }
+
+      // create course replaced entity
+      const courseId = crypto
+        .keccak256(Bytes.fromUTF8(event.jsonDescription))
+        .toHexString();
+      let course = CourseReplaced.load(courseId);
+      if (!course) {
+        course = new CourseReplaced(courseId);
+      }
+
+      course.id = courseId;
+      course.owner_ = courseOwner;
+      course.new_course_uri = courseReplacedUris;
+      course.save();
+    }
+
+    // Handle course cert claimed event
+    if (jsonObj.get("CourseCertClaimed")) {
+      const courseCertClaimed = jsonObj.get("CourseCertClaimed")!.toObject();
+
+      const courseCandidate = courseCertClaimed.get("candidate")!.toString();
+
+      // create course cert claimed entity
+      const courseId = crypto
+        .keccak256(Bytes.fromUTF8(event.jsonDescription))
+        .toHexString();
+      let course = CourseCertClaimed.load(courseId);
+      if (!course) {
+        course = new CourseCertClaimed(courseId);
+      }
+
+      course.id = courseId;
+      course.candidate = courseCandidate;
+      course.save();
+    }
+
+    // Handle admin transferred event
+    if (jsonObj.get("AdminTransferred")) {
+      const adminTransferred = jsonObj.get("AdminTransferred")!.toObject();
+      const adminTransferredAddress = adminTransferred
+        .get("new_admin")!
+        .toString();
+
+      // create admin transferred entity
+      const courseId = crypto
+        .keccak256(Bytes.fromUTF8(event.jsonDescription))
+        .toHexString();
+      let course = AdminTransferred.load(courseId);
+      if (!course) {
+        course = new AdminTransferred(courseId);
+      }
+
+      course.id = courseId;
+      course.new_admin = adminTransferredAddress;
+      course.save();
+    }
   }
 }
 
