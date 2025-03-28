@@ -1,3 +1,41 @@
 type MyEntity @entity {
-    id: ID!
+  id: ID!
+}
+
+type EventCreated @entity {
+  id: ID!
+  event_name: [String!]!
+  event_organizer: String!
+  event_uri: [String!]!
+}
+
+type AttendanceMarked @entity {
+  id: ID!
+  attendee: String!
+}
+
+type RegisteredForEvent @entity {
+  id: ID!
+  attendee: String!
+}
+
+type RegistrationStatusChanged @entity {
+  id: ID!
+  registration_open: BigInt!
+}
+
+type AdminTransferred @entity {
+  id: ID!
+  old_admin: String!
+  new_admin: String!
+}
+
+type AdminOwnershipClaimed @entity {
+  id: ID!
+  new_admin: String!
+}
+
+type BatchCertificationCompleted @entity {
+  id: ID!
+  certified_attendees: [String!]!
 }
