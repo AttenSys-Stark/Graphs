@@ -50,3 +50,448 @@ export class MyEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 }
+
+export class EventCreated extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save EventCreated entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type EventCreated must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("EventCreated", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): EventCreated | null {
+    return changetype<EventCreated | null>(
+      store.get_in_block("EventCreated", id),
+    );
+  }
+
+  static load(id: string): EventCreated | null {
+    return changetype<EventCreated | null>(store.get("EventCreated", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get event_name(): Array<string> {
+    let value = this.get("event_name");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set event_name(value: Array<string>) {
+    this.set("event_name", Value.fromStringArray(value));
+  }
+
+  get event_organizer(): string {
+    let value = this.get("event_organizer");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set event_organizer(value: string) {
+    this.set("event_organizer", Value.fromString(value));
+  }
+
+  get event_uri(): Array<string> {
+    let value = this.get("event_uri");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set event_uri(value: Array<string>) {
+    this.set("event_uri", Value.fromStringArray(value));
+  }
+}
+
+export class AttendanceMarked extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save AttendanceMarked entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type AttendanceMarked must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("AttendanceMarked", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): AttendanceMarked | null {
+    return changetype<AttendanceMarked | null>(
+      store.get_in_block("AttendanceMarked", id),
+    );
+  }
+
+  static load(id: string): AttendanceMarked | null {
+    return changetype<AttendanceMarked | null>(
+      store.get("AttendanceMarked", id),
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get attendee(): string {
+    let value = this.get("attendee");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set attendee(value: string) {
+    this.set("attendee", Value.fromString(value));
+  }
+}
+
+export class RegisteredForEvent extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save RegisteredForEvent entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type RegisteredForEvent must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("RegisteredForEvent", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): RegisteredForEvent | null {
+    return changetype<RegisteredForEvent | null>(
+      store.get_in_block("RegisteredForEvent", id),
+    );
+  }
+
+  static load(id: string): RegisteredForEvent | null {
+    return changetype<RegisteredForEvent | null>(
+      store.get("RegisteredForEvent", id),
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get attendee(): string {
+    let value = this.get("attendee");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set attendee(value: string) {
+    this.set("attendee", Value.fromString(value));
+  }
+}
+
+export class RegistrationStatusChanged extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save RegistrationStatusChanged entity without an ID",
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type RegistrationStatusChanged must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("RegistrationStatusChanged", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): RegistrationStatusChanged | null {
+    return changetype<RegistrationStatusChanged | null>(
+      store.get_in_block("RegistrationStatusChanged", id),
+    );
+  }
+
+  static load(id: string): RegistrationStatusChanged | null {
+    return changetype<RegistrationStatusChanged | null>(
+      store.get("RegistrationStatusChanged", id),
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get registration_open(): BigInt {
+    let value = this.get("registration_open");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set registration_open(value: BigInt) {
+    this.set("registration_open", Value.fromBigInt(value));
+  }
+}
+
+export class AdminTransferred extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save AdminTransferred entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type AdminTransferred must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("AdminTransferred", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): AdminTransferred | null {
+    return changetype<AdminTransferred | null>(
+      store.get_in_block("AdminTransferred", id),
+    );
+  }
+
+  static load(id: string): AdminTransferred | null {
+    return changetype<AdminTransferred | null>(
+      store.get("AdminTransferred", id),
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get old_admin(): string {
+    let value = this.get("old_admin");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set old_admin(value: string) {
+    this.set("old_admin", Value.fromString(value));
+  }
+
+  get new_admin(): string {
+    let value = this.get("new_admin");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set new_admin(value: string) {
+    this.set("new_admin", Value.fromString(value));
+  }
+}
+
+export class AdminOwnershipClaimed extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save AdminOwnershipClaimed entity without an ID",
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type AdminOwnershipClaimed must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("AdminOwnershipClaimed", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): AdminOwnershipClaimed | null {
+    return changetype<AdminOwnershipClaimed | null>(
+      store.get_in_block("AdminOwnershipClaimed", id),
+    );
+  }
+
+  static load(id: string): AdminOwnershipClaimed | null {
+    return changetype<AdminOwnershipClaimed | null>(
+      store.get("AdminOwnershipClaimed", id),
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get new_admin(): string {
+    let value = this.get("new_admin");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set new_admin(value: string) {
+    this.set("new_admin", Value.fromString(value));
+  }
+}
+
+export class BatchCertificationCompleted extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save BatchCertificationCompleted entity without an ID",
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type BatchCertificationCompleted must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("BatchCertificationCompleted", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): BatchCertificationCompleted | null {
+    return changetype<BatchCertificationCompleted | null>(
+      store.get_in_block("BatchCertificationCompleted", id),
+    );
+  }
+
+  static load(id: string): BatchCertificationCompleted | null {
+    return changetype<BatchCertificationCompleted | null>(
+      store.get("BatchCertificationCompleted", id),
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get certified_attendees(): Array<string> {
+    let value = this.get("certified_attendees");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set certified_attendees(value: Array<string>) {
+    this.set("certified_attendees", Value.fromStringArray(value));
+  }
+}
