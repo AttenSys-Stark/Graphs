@@ -27,6 +27,8 @@ export function handleTriggers(bytes: Uint8Array): void {
     const jsonDescription = json.fromBytes(
       Bytes.fromUTF8(event.jsonDescription)
     );
+    const blockNumber = event.blockNumber
+    const timesStamp = event.blockTimestamp
 
     if (!jsonDescription) continue;
 
@@ -37,6 +39,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       const eventCreated = jsonObj.get("EventCreated")!.toObject();
       const eventNameObj = eventCreated.get("event_name")!.toObject();
       const eventNameArrays: string[] = [];
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
 
       const nameData = eventNameObj.get("data")!.toArray();
       for (let j = 0; j < nameData.length; j++) {
@@ -78,6 +82,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       event.event_name = eventNameArrays;
       event.event_organizer = eventOrganizerAddress;
       event.event_uri = eventUriArrays;
+      event.block_number = block_no;
+      event.block_timestamp = unix_time;
       event.save();
     }
 
@@ -85,6 +91,8 @@ export function handleTriggers(bytes: Uint8Array): void {
     if (jsonObj.get("AttendanceMarked")) {
       const attendanceMarked = jsonObj.get("AttendanceMarked")!.toObject();
       const attendeeAddress = attendanceMarked.get("attendee")!.toString();
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
 
       // create attendance marked entity
 
@@ -95,6 +103,8 @@ export function handleTriggers(bytes: Uint8Array): void {
 
       event.id = eventID;
       event.attendee = attendeeAddress;
+      event.block_number = block_no;
+      event.block_timestamp = unix_time;
       event.save();
     }
 
@@ -102,6 +112,8 @@ export function handleTriggers(bytes: Uint8Array): void {
     if (jsonObj.get("RegisteredForEvent")) {
       const registeredForEvent = jsonObj.get("RegisteredForEvent")!.toObject();
       const attendeeAddress = registeredForEvent.get("attendee")!.toString();
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
 
       let event = RegisteredForEvent.load(eventID);
       if (!event) {
@@ -110,11 +122,15 @@ export function handleTriggers(bytes: Uint8Array): void {
 
       event.id = eventID;
       event.attendee = attendeeAddress;
+      event.block_number = block_no;
+      event.block_timestamp = unix_time;
       event.save();
     }
 
     // Handle registration status changed event
     if (jsonObj.get("RegistrationStatusChanged")) {
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
       const registrationStatusChanged = jsonObj
         .get("RegistrationStatusChanged")!
         .toObject();
@@ -133,6 +149,8 @@ export function handleTriggers(bytes: Uint8Array): void {
 
       event.id = eventID;
       event.registration_open = registrationValue;
+      event.block_number = block_no;
+      event.block_timestamp = unix_time;
       event.save();
     }
 
@@ -141,6 +159,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       const adminTransferred = jsonObj.get("AdminTransferred")!.toObject();
       const oldAdminAddress = adminTransferred.get("old_admin")!.toString();
       const newAdminAddress = adminTransferred.get("new_admin")!.toString();
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
 
       let event = AdminTransferred.load(eventID);
       if (!event) {
@@ -150,6 +170,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       event.id = eventID;
       event.old_admin = oldAdminAddress;
       event.new_admin = newAdminAddress;
+      event.block_number = block_no;
+      event.block_timestamp = unix_time;
       event.save();
     }
 
@@ -162,6 +184,9 @@ export function handleTriggers(bytes: Uint8Array): void {
         .get("new_admin")!
         .toString();
 
+        const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
+
       let event = AdminOwnershipClaimed.load(eventID);
       if (!event) {
         event = new AdminOwnershipClaimed(eventID);
@@ -169,6 +194,8 @@ export function handleTriggers(bytes: Uint8Array): void {
 
       event.id = eventID;
       event.new_admin = newAdminAddress;
+      event.block_number = block_no;
+      event.block_timestamp = unix_time;
       event.save();
     }
 
@@ -181,6 +208,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       const certifiedAttendeesData = batchCertificationCompleted
         .get("certified_attendees")!
         .toArray();
+        const block_no = BigInt.fromString(blockNumber.toString());
+        const unix_time = BigInt.fromString(timesStamp.toString());
 
       const addressArrays: string[] = [];
 
@@ -205,6 +234,8 @@ export function handleTriggers(bytes: Uint8Array): void {
 
       event.id = eventID;
       event.certified_attendees = addressArrays;
+      event.block_number = block_no;
+      event.block_timestamp = unix_time;
       event.save();
     }
   }

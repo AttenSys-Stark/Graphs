@@ -9,20 +9,28 @@ type CourseCreated @entity {
   name_: [String!]!
   symbol: [String!]!
   course_ipfs_uri: [String!]!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }
 
 type CourseReplaced @entity {
   id: ID!
   owner_: String!
   new_course_uri: [String!]!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }
 
 type CourseCertClaimed @entity {
   id: ID!
   candidate: String!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }
 
 type AdminTransferred @entity {
   id: ID!
   new_admin: String!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }

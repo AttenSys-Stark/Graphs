@@ -130,6 +130,32 @@ export class EventCreated extends Entity {
   set event_uri(value: Array<string>) {
     this.set("event_uri", Value.fromStringArray(value));
   }
+
+  get block_number(): BigInt {
+    let value = this.get("block_number");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_number(value: BigInt) {
+    this.set("block_number", Value.fromBigInt(value));
+  }
+
+  get block_timestamp(): BigInt {
+    let value = this.get("block_timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_timestamp(value: BigInt) {
+    this.set("block_timestamp", Value.fromBigInt(value));
+  }
 }
 
 export class AttendanceMarked extends Entity {
@@ -187,6 +213,32 @@ export class AttendanceMarked extends Entity {
   set attendee(value: string) {
     this.set("attendee", Value.fromString(value));
   }
+
+  get block_number(): BigInt {
+    let value = this.get("block_number");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_number(value: BigInt) {
+    this.set("block_number", Value.fromBigInt(value));
+  }
+
+  get block_timestamp(): BigInt {
+    let value = this.get("block_timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_timestamp(value: BigInt) {
+    this.set("block_timestamp", Value.fromBigInt(value));
+  }
 }
 
 export class RegisteredForEvent extends Entity {
@@ -243,6 +295,32 @@ export class RegisteredForEvent extends Entity {
 
   set attendee(value: string) {
     this.set("attendee", Value.fromString(value));
+  }
+
+  get block_number(): BigInt {
+    let value = this.get("block_number");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_number(value: BigInt) {
+    this.set("block_number", Value.fromBigInt(value));
+  }
+
+  get block_timestamp(): BigInt {
+    let value = this.get("block_timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_timestamp(value: BigInt) {
+    this.set("block_timestamp", Value.fromBigInt(value));
   }
 }
 
@@ -303,6 +381,32 @@ export class RegistrationStatusChanged extends Entity {
 
   set registration_open(value: BigInt) {
     this.set("registration_open", Value.fromBigInt(value));
+  }
+
+  get block_number(): BigInt {
+    let value = this.get("block_number");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_number(value: BigInt) {
+    this.set("block_number", Value.fromBigInt(value));
+  }
+
+  get block_timestamp(): BigInt {
+    let value = this.get("block_timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_timestamp(value: BigInt) {
+    this.set("block_timestamp", Value.fromBigInt(value));
   }
 }
 
@@ -374,6 +478,32 @@ export class AdminTransferred extends Entity {
   set new_admin(value: string) {
     this.set("new_admin", Value.fromString(value));
   }
+
+  get block_number(): BigInt {
+    let value = this.get("block_number");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_number(value: BigInt) {
+    this.set("block_number", Value.fromBigInt(value));
+  }
+
+  get block_timestamp(): BigInt {
+    let value = this.get("block_timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_timestamp(value: BigInt) {
+    this.set("block_timestamp", Value.fromBigInt(value));
+  }
 }
 
 export class AdminOwnershipClaimed extends Entity {
@@ -434,6 +564,32 @@ export class AdminOwnershipClaimed extends Entity {
   set new_admin(value: string) {
     this.set("new_admin", Value.fromString(value));
   }
+
+  get block_number(): BigInt {
+    let value = this.get("block_number");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_number(value: BigInt) {
+    this.set("block_number", Value.fromBigInt(value));
+  }
+
+  get block_timestamp(): BigInt {
+    let value = this.get("block_timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_timestamp(value: BigInt) {
+    this.set("block_timestamp", Value.fromBigInt(value));
+  }
 }
 
 export class BatchCertificationCompleted extends Entity {
@@ -493,5 +649,31 @@ export class BatchCertificationCompleted extends Entity {
 
   set certified_attendees(value: Array<string>) {
     this.set("certified_attendees", Value.fromStringArray(value));
+  }
+
+  get block_number(): BigInt {
+    let value = this.get("block_number");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_number(value: BigInt) {
+    this.set("block_number", Value.fromBigInt(value));
+  }
+
+  get block_timestamp(): BigInt {
+    let value = this.get("block_timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_timestamp(value: BigInt) {
+    this.set("block_timestamp", Value.fromBigInt(value));
   }
 }

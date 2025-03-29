@@ -8,6 +8,12 @@ export class Event {
   static encode(message: Event, writer: Writer): void {
     writer.uint32(10);
     writer.string(message.jsonDescription);
+
+    writer.uint32(16);
+    writer.uint64(message.blockNumber);
+
+    writer.uint32(24);
+    writer.int64(message.blockTimestamp);
   }
 
   static decode(reader: Reader, length: i32): Event {
@@ -21,6 +27,14 @@ export class Event {
           message.jsonDescription = reader.string();
           break;
 
+        case 2:
+          message.blockNumber = reader.uint64();
+          break;
+
+        case 3:
+          message.blockTimestamp = reader.int64();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -31,8 +45,16 @@ export class Event {
   }
 
   jsonDescription: string;
+  blockNumber: u64;
+  blockTimestamp: i64;
 
-  constructor(jsonDescription: string = "") {
+  constructor(
+    jsonDescription: string = "",
+    blockNumber: u64 = 0,
+    blockTimestamp: i64 = 0
+  ) {
     this.jsonDescription = jsonDescription;
+    this.blockNumber = blockNumber;
+    this.blockTimestamp = blockTimestamp;
   }
 }

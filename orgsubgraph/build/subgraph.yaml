@@ -1,0 +1,19 @@
+specVersion: 1.0.0
+description: attensysgraph Substreams-powered-Subgraph
+indexerHints:
+  prune: auto
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: substreams
+    name: attensysgraph
+    network: starknet-testnet
+    source:
+      package:
+        moduleName: map_orgsubgraph_events
+        file: attensysgraph/attensysgraph-v0.1.0.spkg
+    mapping:
+      apiVersion: 0.0.7
+      kind: substreams/graph-entities
+      file: attensysgraph/attensysgraph.wasm
+      handler: handleTriggers

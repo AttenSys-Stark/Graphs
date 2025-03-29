@@ -24,6 +24,8 @@ export function handleTriggers(bytes: Uint8Array): void {
     const jsonDescription = json.fromBytes(
       Bytes.fromUTF8(event.jsonDescription)
     );
+    const blockNumber = event.blockNumber
+    const timesStamp = event.blockTimestamp
 
     if (!jsonDescription) continue;
 
@@ -32,7 +34,8 @@ export function handleTriggers(bytes: Uint8Array): void {
     if (jsonObj.get("CourseCreated")) {
       const courseCreated = jsonObj.get("CourseCreated")!.toObject();
       const courseOwner = courseCreated.get("owner_")!.toString();
-
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
       //handle base uri
       const baseUriObj = courseCreated.get("base_uri")!.toObject();
       const baseUris: string[] = [];
@@ -108,6 +111,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       course.name_ = nameArrays; // ByteArray
       course.symbol = symArrays; // ByteArray
       course.course_ipfs_uri = courseIpfsUris; // ByteArray
+      course.block_number = block_no;
+      course.block_timestamp = unix_time;
       course.save();
     }
 
@@ -119,6 +124,8 @@ export function handleTriggers(bytes: Uint8Array): void {
         .get("new_course_uri")!
         .toObject();
       const courseReplacedUris: string[] = [];
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
 
       const courseReplacedData = courseReplacedUriObj.get("data")!.toArray();
       for (let j = 0; j < courseReplacedData.length; j++) {
@@ -147,6 +154,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       course.id = courseId;
       course.owner_ = courseOwner;
       course.new_course_uri = courseReplacedUris;
+      course.block_number = block_no;
+      course.block_timestamp = unix_time;
       course.save();
     }
 
@@ -155,6 +164,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       const courseCertClaimed = jsonObj.get("CourseCertClaimed")!.toObject();
 
       const courseCandidate = courseCertClaimed.get("candidate")!.toString();
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
 
       // create course cert claimed entity
       const courseId = crypto
@@ -167,6 +178,8 @@ export function handleTriggers(bytes: Uint8Array): void {
 
       course.id = courseId;
       course.candidate = courseCandidate;
+      course.block_number = block_no;
+      course.block_timestamp = unix_time;
       course.save();
     }
 
@@ -176,6 +189,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       const adminTransferredAddress = adminTransferred
         .get("new_admin")!
         .toString();
+        const block_no = BigInt.fromString(blockNumber.toString());
+        const unix_time = BigInt.fromString(timesStamp.toString());
 
       // create admin transferred entity
       const courseId = crypto
@@ -188,6 +203,8 @@ export function handleTriggers(bytes: Uint8Array): void {
 
       course.id = courseId;
       course.new_admin = adminTransferredAddress;
+      course.block_number = block_no;
+      course.block_timestamp = unix_time;
       course.save();
     }
   }
