@@ -1,0 +1,61 @@
+type myEntity @entity {
+  id: ID!
+}
+
+type OrganizationProfile @entity {
+  id: ID!
+  org_name: String!
+  org_ipfs_uri: [String!]!
+  block_number : BigInt!
+  block_timestamp : BigInt!
+}
+
+type InstructorAddedToOrg @entity {
+  id: ID!
+  org_name: String!
+  instructors: [String!]!
+  block_number : BigInt!
+  block_timestamp : BigInt!
+}
+
+type InstructorRemovedFromOrg @entity {
+  id: ID!
+  instructor_addr: String!
+  org_owner: String!
+  block_number : BigInt!
+  block_timestamp : BigInt!
+}
+
+type BootCampCreated @entity {
+  id: ID! # Composite ID: `${orgName}-${bootcampName}`
+  org_name: String!
+  bootcamp_name: String!
+  nft_name: String!
+  nft_symbol: String!
+  block_number : BigInt!
+  block_timestamp : BigInt!
+}
+
+type BootcampRegistration @entity {
+  id: ID!
+  org_address: String!
+  bootcamp_id: BigInt!
+  block_number : BigInt!
+  block_timestamp : BigInt!
+}
+
+type RegistrationApproved @entity {
+  id: ID!
+  student_address: String!
+  bootcamp_id: BigInt!
+  block_number : BigInt!
+  block_timestamp : BigInt!
+}
+
+type RegistrationDeclined @entity {
+  id: ID!
+  student_address: String!
+  bootcamp_id: BigInt!
+  block_number : BigInt!
+  block_timestamp : BigInt!
+}
