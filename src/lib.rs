@@ -52,7 +52,15 @@ fn map_orgsubgraph_events(transactions: Transactions) -> Result<Events, substrea
             if let orgsubgraph_event = OrgsubgraphEvent::try_from(emitted_event).unwrap() {
                 let event_json = serde_json::to_string(&orgsubgraph_event).unwrap();
                 let event = Event {
-                    json_description: event_json
+                    json_description: event_json,
+                    block_number: transactions.clock.clone().unwrap().number,
+                    block_timestamp: transactions
+                        .clock
+                        .clone()
+                        .unwrap()
+                        .timestamp
+                        .unwrap()
+                        .seconds,
                 };
 
                 proto_events.events.push(event);
@@ -101,7 +109,15 @@ fn map_eventsubgraph_events(transactions: Transactions) -> Result<Events, substr
             if let eventsubgraph_event = EventsubgraphEvent::try_from(emitted_event).unwrap() {
                 let event_json = serde_json::to_string(&eventsubgraph_event).unwrap();
                 let event = Event {
-                    json_description: event_json
+                    json_description: event_json,
+                    block_number: transactions.clock.clone().unwrap().number,
+                    block_timestamp: transactions
+                        .clock
+                        .clone()
+                        .unwrap()
+                        .timestamp
+                        .unwrap()
+                        .seconds,
                 };
 
                 proto_events.events.push(event);
@@ -150,7 +166,15 @@ fn map_coursesubgraph_events(transactions: Transactions) -> Result<Events, subst
             if let coursesubgraph_event = CoursesubgraphEvent::try_from(emitted_event).unwrap() {
                 let event_json = serde_json::to_string(&coursesubgraph_event).unwrap();
                 let event = Event {
-                    json_description: event_json
+                    json_description: event_json,
+                    block_number: transactions.clock.clone().unwrap().number,
+                    block_timestamp: transactions
+                        .clock
+                        .clone()
+                        .unwrap()
+                        .timestamp
+                        .unwrap()
+                        .seconds,
                 };
 
                 proto_events.events.push(event);

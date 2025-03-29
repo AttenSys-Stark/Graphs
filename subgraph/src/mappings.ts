@@ -22,6 +22,8 @@ export function handleTriggers(bytes: Uint8Array): void {
     const jsonDescription = json.fromBytes(
       Bytes.fromUTF8(event.jsonDescription),
     );
+    // const blockNumber = event.block_number
+
     if (!jsonDescription) continue;
 
     const jsonObj = jsonDescription.toObject();
