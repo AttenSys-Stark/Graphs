@@ -22,14 +22,18 @@ export function handleTriggers(bytes: Uint8Array): void {
     const jsonDescription = json.fromBytes(
       Bytes.fromUTF8(event.jsonDescription),
     );
-    // const blockNumber = event.block_number
+    const blockNumber = event.blockNumber
+    const timesStamp = event.blockTimestamp
 
+    
     if (!jsonDescription) continue;
-
+    
     const jsonObj = jsonDescription.toObject();
-
+    
     // Handle OrganizationProfile event
     if (jsonObj.get("OrganizationProfile")) {
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
       const orgProfile = jsonObj.get("OrganizationProfile")!.toObject();
       const orgNameObj = orgProfile.get("org_name")!.toObject();
       const orgName = hexToString(orgNameObj.get("pending_word")!.toString());
@@ -59,6 +63,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       profile.id = profileId;
       profile.org_name = orgName;
       profile.org_ipfs_uri = ipfsUris;
+      profile.block_number = block_no;
+      profile.block_timestamp = unix_time;
       profile.save();
     }
 
@@ -68,6 +74,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       const orgNameObj = instructororg.get("org_name")!.toObject();
       const orgName = hexToString(orgNameObj.get("pending_word")!.toString());
       const InstructorAddedToOrgID = `${orgName}-instructors`
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
       
       // Process ALL instructor addresses
       const instructorArray = instructororg.get("instructor")!.toArray();
@@ -84,6 +92,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       }
       instructortororg.org_name = orgName;
       instructortororg.instructors = instructorAddresses;
+      instructortororg.block_number = block_no;
+      instructortororg.block_timestamp = unix_time;
       instructortororg.save();
      }
 
@@ -92,6 +102,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       const instructororgremoved = jsonObj.get("InstructorRemovedFromOrg")!.toObject();
       const instructoraddress = instructororgremoved.get("instructor_addr")!.toString();
       const owneraddress = instructororgremoved.get("org_owner")!.toString();
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
 
       const InstructorRemovedFromOrgID = `owner-${owneraddress}`
       let removed = InstructorRemovedFromOrg.load(InstructorRemovedFromOrgID);
@@ -100,6 +112,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       }
       removed.instructor_addr = instructoraddress;
       removed.org_owner = owneraddress;
+      removed.block_number = block_no;
+      removed.block_timestamp = unix_time;
       removed.save();
      }
 
@@ -118,6 +132,9 @@ export function handleTriggers(bytes: Uint8Array): void {
       const nftsymbolObj = bootcampcreated.get("nft_symbol")!.toObject();
       const Nft_symbol = hexToString(nftsymbolObj.get("pending_word")!.toString());
 
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
+
       const createdID = `${orgName}-${bootcampName}`
       let created = BootCampCreated.load(createdID);
       
@@ -128,7 +145,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       created.bootcamp_name = bootcampName;
       created.nft_name = Ntf_name;
       created.nft_symbol = Nft_symbol;
-
+      created.block_number = block_no;
+      created.block_timestamp = unix_time;
       created.save();
      }
 
@@ -142,6 +160,8 @@ export function handleTriggers(bytes: Uint8Array): void {
        const eventID = crypto
       .keccak256(Bytes.fromUTF8(event.jsonDescription))
       .toHexString();
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
 
        let registration = BootcampRegistration.load(eventID)
        if (!registration) {
@@ -149,7 +169,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       }
       registration.bootcamp_id = bootcampId
       registration.org_address = orgaddress
-
+      registration.block_number = block_no;
+      registration.block_timestamp = unix_time;
       registration.save();
      }
 
@@ -162,6 +183,9 @@ export function handleTriggers(bytes: Uint8Array): void {
       .keccak256(Bytes.fromUTF8(event.jsonDescription))
       .toHexString();
 
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
+
       let approval = RegistrationApproved.load(eventID)
        if (!approval) {
         approval = new RegistrationApproved(eventID);
@@ -169,6 +193,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       approval.bootcamp_id = bootcampId
       approval.student_address = studentaddress
 
+      approval.block_number = block_no;
+      approval.block_timestamp = unix_time;
       approval.save();
 
      }
@@ -181,6 +207,9 @@ export function handleTriggers(bytes: Uint8Array): void {
        const eventID = crypto
       .keccak256(Bytes.fromUTF8(event.jsonDescription))
       .toHexString();
+     
+      const block_no = BigInt.fromString(blockNumber.toString());
+      const unix_time = BigInt.fromString(timesStamp.toString());
 
       let rejection = RegistrationDeclined.load(eventID)
        if (!rejection) {
@@ -188,6 +217,8 @@ export function handleTriggers(bytes: Uint8Array): void {
       }
       rejection.bootcamp_id = bootcampId
       rejection.student_address = studentaddress
+      rejection.block_number = block_no;
+      rejection.block_timestamp = unix_time;
 
       rejection.save();
 

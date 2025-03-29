@@ -7,35 +7,49 @@ type EventCreated @entity {
   event_name: [String!]!
   event_organizer: String!
   event_uri: [String!]!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }
 
 type AttendanceMarked @entity {
   id: ID!
   attendee: String!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }
 
 type RegisteredForEvent @entity {
   id: ID!
   attendee: String!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }
 
 type RegistrationStatusChanged @entity {
   id: ID!
   registration_open: BigInt!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }
 
 type AdminTransferred @entity {
   id: ID!
   old_admin: String!
   new_admin: String!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }
 
 type AdminOwnershipClaimed @entity {
   id: ID!
   new_admin: String!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }
 
 type BatchCertificationCompleted @entity {
   id: ID!
   certified_attendees: [String!]!
+  block_number : BigInt!
+  block_timestamp : BigInt!
 }
