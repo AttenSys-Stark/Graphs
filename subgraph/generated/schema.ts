@@ -119,6 +119,19 @@ export class OrganizationProfile extends Entity {
   set org_ipfs_uri(value: Array<string>) {
     this.set("org_ipfs_uri", Value.fromStringArray(value));
   }
+
+  get block_number(): BigInt {
+    let value = this.get("block_number");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set block_number(value: BigInt) {
+    this.set("block_number", Value.fromBigInt(value));
+  }
 }
 
 export class InstructorAddedToOrg extends Entity {

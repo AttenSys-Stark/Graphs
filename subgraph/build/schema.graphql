@@ -6,6 +6,7 @@ type OrganizationProfile @entity {
   id: ID!
   org_name: String!
   org_ipfs_uri: [String!]!
+  block_number : BigInt!
 }
 
 type InstructorAddedToOrg @entity {
