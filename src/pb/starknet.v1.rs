@@ -5,10 +5,6 @@
 pub struct Event {
     #[prost(string, tag="1")]
     pub json_description: ::prost::alloc::string::String,
-    #[prost(uint64, tag="2")]
-    pub block_number: u64,
-    #[prost(int64, tag="3")]
-    pub block_timestamp: i64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

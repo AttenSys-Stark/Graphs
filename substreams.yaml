@@ -27,21 +27,21 @@ binaries:
 modules:
 - name: map_orgsubgraph_events
   kind: map
-  initialBlock: 680374
+  initialBlock: 594924
   inputs:
     - map: starknet:filtered_transactions
   output:
    type: proto:starknet.v1.Events
 - name: map_eventsubgraph_events
   kind: map
-  initialBlock: 680372
+  initialBlock: 594469
   inputs:
     - map: starknet:filtered_transactions
   output:
    type: proto:starknet.v1.Events
 - name: map_coursesubgraph_events
   kind: map
-  initialBlock: 680370
+  initialBlock: 596796
   inputs:
     - map: starknet:filtered_transactions
   output:
@@ -50,4 +50,4 @@ modules:
 network: starknet-testnet
 
 params:
-  starknet:filtered_transactions: ev:from_address:0x0646f8f39ea645470a85edbee5cae24c37d8b0c524e7abed04bb98d858c89c0a || ev:from_address:0x0699e49b9b193554ceed38ef9477f771f2cd3a65a71832ea342ba63540d736cb || ev:from_address:0x02d876f20d2ed89f91ca59e559e954dc78a4e81abd6bf7831ef238a2adfbef24
+  starknet:filtered_transactions: ev:from_address:0x03454c358e5cd9cb1a445b0972a521adbcf06cedf547d43e7d56f8ed8e240bbc || ev:from_address:0x01047113eea577a1230dc04b5085a94fb4ef01a5b68d2652492cd5deeb361f75 || ev:from_address:0x027da6130567c2cc618a7a6d3e2dc463ecdac1ee6f77a1a07310510e76459093

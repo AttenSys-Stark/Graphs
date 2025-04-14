@@ -4,8 +4,6 @@ package starknet.v1;
 
 message Event {
   string json_description = 1;
-  uint64 block_number = 2;
-  int64 block_timestamp = 3;
 }
 
 message Events {
