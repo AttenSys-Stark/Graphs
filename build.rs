@@ -4,6 +4,14 @@ use std::collections::HashMap;
 fn main() {
     // Aliases added from the ABI
     let mut aliases = HashMap::new();
+    aliases.insert(
+        String::from("openzeppelin_access::ownable::ownable::OwnableComponent::Event"),
+        String::from("OwnableComponentEvent"),
+    );
+    aliases.insert(
+        String::from("openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event"),
+        String::from("UpgradeableComponentEvent"),
+    );
 
     let orgsubgraph_abigen =
         Abigen::new("orgsubgraph", "./abi/orgsubgraph_contract.abi.json").with_types_aliases(aliases).with_derives(vec!["serde::Serialize".to_string(), "serde::Deserialize".to_string()]);
@@ -15,6 +23,14 @@ fn main() {
             .unwrap();
     // Aliases added from the ABI
     let mut aliases = HashMap::new();
+    aliases.insert(
+        String::from("openzeppelin_access::ownable::ownable::OwnableComponent::Event"),
+        String::from("OwnableComponentEvent"),
+    );
+    aliases.insert(
+        String::from("openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event"),
+        String::from("UpgradeableComponentEvent"),
+    );
 
     let eventsubgraph_abigen =
         Abigen::new("eventsubgraph", "./abi/eventsubgraph_contract.abi.json").with_types_aliases(aliases).with_derives(vec!["serde::Serialize".to_string(), "serde::Deserialize".to_string()]);
@@ -26,6 +42,14 @@ fn main() {
             .unwrap();
     // Aliases added from the ABI
     let mut aliases = HashMap::new();
+    aliases.insert(
+        String::from("openzeppelin_access::ownable::ownable::OwnableComponent::Event"),
+        String::from("OwnableComponentEvent"),
+    );
+    aliases.insert(
+        String::from("openzeppelin_upgrades::upgradeable::UpgradeableComponent::Event"),
+        String::from("UpgradeableComponentEvent"),
+    );
 
     let coursesubgraph_abigen =
         Abigen::new("coursesubgraph", "./abi/coursesubgraph_contract.abi.json").with_types_aliases(aliases).with_derives(vec!["serde::Serialize".to_string(), "serde::Deserialize".to_string()]);

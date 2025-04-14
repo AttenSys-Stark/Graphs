@@ -1,8 +1,8 @@
-type myEntity @entity {
+type myEntity @entity(immutable: true) {
   id: ID!
 }
 
-type OrganizationProfile @entity {
+type OrganizationProfile @entity(immutable: true) {
   id: ID!
   org_name: String!
   org_ipfs_uri: [String!]!
@@ -10,7 +10,7 @@ type OrganizationProfile @entity {
   block_timestamp : BigInt!
 }
 
-type InstructorAddedToOrg @entity {
+type InstructorAddedToOrg @entity(immutable: true) {
   id: ID!
   org_name: String!
   instructors: [String!]!
@@ -18,7 +18,7 @@ type InstructorAddedToOrg @entity {
   block_timestamp : BigInt!
 }
 
-type InstructorRemovedFromOrg @entity {
+type InstructorRemovedFromOrg @entity(immutable: true) {
   id: ID!
   instructor_addr: String!
   org_owner: String!
@@ -26,7 +26,7 @@ type InstructorRemovedFromOrg @entity {
   block_timestamp : BigInt!
 }
 
-type BootCampCreated @entity {
+type BootCampCreated @entity(immutable: true) {
   id: ID! # Composite ID: `${orgName}-${bootcampName}`
   org_name: String!
   bootcamp_name: String!
@@ -36,7 +36,7 @@ type BootCampCreated @entity {
   block_timestamp : BigInt!
 }
 
-type BootcampRegistration @entity {
+type BootcampRegistration @entity(immutable: true) {
   id: ID!
   org_address: String!
   bootcamp_id: BigInt!
@@ -44,7 +44,7 @@ type BootcampRegistration @entity {
   block_timestamp : BigInt!
 }
 
-type RegistrationApproved @entity {
+type RegistrationApproved @entity(immutable: true) {
   id: ID!
   student_address: String!
   bootcamp_id: BigInt!
@@ -52,7 +52,7 @@ type RegistrationApproved @entity {
   block_timestamp : BigInt!
 }
 
-type RegistrationDeclined @entity {
+type RegistrationDeclined @entity(immutable: true) {
   id: ID!
   student_address: String!
   bootcamp_id: BigInt!

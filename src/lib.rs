@@ -24,7 +24,7 @@ fn map_orgsubgraph_events(transactions: Transactions) -> Result<Events, substrea
         for event in data_events {
             let event_from_address = Hex(event.from_address.as_slice()).to_string();
 
-            if event_from_address != "03454c358e5cd9cb1a445b0972a521adbcf06cedf547d43e7d56f8ed8e240bbc" {
+            if event_from_address != "0646f8f39ea645470a85edbee5cae24c37d8b0c524e7abed04bb98d858c89c0a" {
                 continue;
             }
 
@@ -81,7 +81,7 @@ fn map_eventsubgraph_events(transactions: Transactions) -> Result<Events, substr
         for event in data_events {
             let event_from_address = Hex(event.from_address.as_slice()).to_string();
 
-            if event_from_address != "01047113eea577a1230dc04b5085a94fb4ef01a5b68d2652492cd5deeb361f75" {
+            if event_from_address != "0699e49b9b193554ceed38ef9477f771f2cd3a65a71832ea342ba63540d736cb" {
                 continue;
             }
 
@@ -138,7 +138,7 @@ fn map_coursesubgraph_events(transactions: Transactions) -> Result<Events, subst
         for event in data_events {
             let event_from_address = Hex(event.from_address.as_slice()).to_string();
 
-            if event_from_address != "027da6130567c2cc618a7a6d3e2dc463ecdac1ee6f77a1a07310510e76459093" {
+            if event_from_address != "02d876f20d2ed89f91ca59e559e954dc78a4e81abd6bf7831ef238a2adfbef24" {
                 continue;
             }
 
