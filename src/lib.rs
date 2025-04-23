@@ -163,22 +163,48 @@ fn map_coursesubgraph_events(transactions: Transactions) -> Result<Events, subst
                 transaction_hash: Felt::default(),
             };
 
-            if let coursesubgraph_event = CoursesubgraphEvent::try_from(emitted_event).unwrap() {
-                let event_json = serde_json::to_string(&coursesubgraph_event).unwrap();
-                let event = Event {
-                    json_description: event_json,
-                    block_number: transactions.clock.clone().unwrap().number,
-                    block_timestamp: transactions
-                        .clock
-                        .clone()
-                        .unwrap()
-                        .timestamp
-                        .unwrap()
-                        .seconds,
-                };
+            // if let coursesubgraph_event = CoursesubgraphEvent::try_from(emitted_event).unwrap() {
+            //     let event_json = serde_json::to_string(&coursesubgraph_event).unwrap();
+            //     let event = Event {
+            //         json_description: event_json,
+            //         block_number: transactions.clock.clone().unwrap().number,
+            //         block_timestamp: transactions
+            //             .clock
+            //             .clone()
+            //             .unwrap()
+            //             .timestamp
+            //             .unwrap()
+            //             .seconds,
+            //     };
 
-                proto_events.events.push(event);
+            //     proto_events.events.push(event);
+            // }
+            match CoursesubgraphEvent::try_from(emitted_event) {
+                Ok(coursesubgraph_event) => {
+                    match serde_json::to_string(&coursesubgraph_event) {
+                        Ok(event_json) => {
+                            proto_events.events.push(Event {
+                                json_description: event_json,
+                                block_number: transactions.clock.clone().unwrap().number,
+                                block_timestamp: transactions
+                                    .clock
+                                    .clone()
+                                    .unwrap()
+                                    .timestamp
+                                    .unwrap()
+                                    .seconds,
+                            });
+                        }
+                        Err(e) => {
+                            continue;
+                        }
+                    }
+                }
+                Err(e) => {
+                    continue;
+                }
             }
+
         }
     }
 

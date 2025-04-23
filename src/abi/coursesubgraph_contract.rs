@@ -61,6 +61,77 @@ impl<P: starknet::providers::Provider + Sync> coursesubgraphReader<P> {
     }
 }
 #[derive(serde::Serialize, serde::Deserialize)]
+pub struct AcquiredCourse {
+    pub course_identifier: cainome::cairo_serde::U256,
+    pub owner: cainome::cairo_serde::ContractAddress,
+    pub candidate: cainome::cairo_serde::ContractAddress,
+}
+impl cainome::cairo_serde::CairoSerde for AcquiredCourse {
+    type RustType = Self;
+    const SERIALIZED_SIZE: std::option::Option<usize> = None;
+    #[inline]
+    fn cairo_serialized_size(__rust: &Self::RustType) -> usize {
+        let mut __size = 0;
+        __size
+            += cainome::cairo_serde::U256::cairo_serialized_size(
+                &__rust.course_identifier,
+            );
+        __size
+            += cainome::cairo_serde::ContractAddress::cairo_serialized_size(
+                &__rust.owner,
+            );
+        __size
+            += cainome::cairo_serde::ContractAddress::cairo_serialized_size(
+                &__rust.candidate,
+            );
+        __size
+    }
+    fn cairo_serialize(__rust: &Self::RustType) -> Vec<starknet::core::types::Felt> {
+        let mut __out: Vec<starknet::core::types::Felt> = vec![];
+        __out
+            .extend(
+                cainome::cairo_serde::U256::cairo_serialize(&__rust.course_identifier),
+            );
+        __out
+            .extend(
+                cainome::cairo_serde::ContractAddress::cairo_serialize(&__rust.owner),
+            );
+        __out
+            .extend(
+                cainome::cairo_serde::ContractAddress::cairo_serialize(&__rust.candidate),
+            );
+        __out
+    }
+    fn cairo_deserialize(
+        __felts: &[starknet::core::types::Felt],
+        __offset: usize,
+    ) -> cainome::cairo_serde::Result<Self::RustType> {
+        let mut __offset = __offset;
+        let course_identifier = cainome::cairo_serde::U256::cairo_deserialize(
+            __felts,
+            __offset,
+        )?;
+        __offset
+            += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
+        let owner = cainome::cairo_serde::ContractAddress::cairo_deserialize(
+            __felts,
+            __offset,
+        )?;
+        __offset += cainome::cairo_serde::ContractAddress::cairo_serialized_size(&owner);
+        let candidate = cainome::cairo_serde::ContractAddress::cairo_deserialize(
+            __felts,
+            __offset,
+        )?;
+        __offset
+            += cainome::cairo_serde::ContractAddress::cairo_serialized_size(&candidate);
+        Ok(AcquiredCourse {
+            course_identifier,
+            owner,
+            candidate,
+        })
+    }
+}
+#[derive(serde::Serialize, serde::Deserialize)]
 pub struct AdminTransferred {
     pub new_admin: cainome::cairo_serde::ContractAddress,
 }
@@ -106,6 +177,8 @@ pub struct Course {
     pub uri: cainome::cairo_serde::ByteArray,
     pub course_ipfs_uri: cainome::cairo_serde::ByteArray,
     pub is_suspended: bool,
+    pub price: u128,
+    pub is_approved: bool,
 }
 impl cainome::cairo_serde::CairoSerde for Course {
     type RustType = Self;
@@ -128,6 +201,8 @@ impl cainome::cairo_serde::CairoSerde for Course {
                 &__rust.course_ipfs_uri,
             );
         __size += bool::cairo_serialized_size(&__rust.is_suspended);
+        __size += u128::cairo_serialized_size(&__rust.price);
+        __size += bool::cairo_serialized_size(&__rust.is_approved);
         __size
     }
     fn cairo_serialize(__rust: &Self::RustType) -> Vec<starknet::core::types::Felt> {
@@ -147,6 +222,8 @@ impl cainome::cairo_serde::CairoSerde for Course {
                 cainome::cairo_serde::ByteArray::cairo_serialize(&__rust.course_ipfs_uri),
             );
         __out.extend(bool::cairo_serialize(&__rust.is_suspended));
+        __out.extend(u128::cairo_serialize(&__rust.price));
+        __out.extend(bool::cairo_serialize(&__rust.is_approved));
         __out
     }
     fn cairo_deserialize(
@@ -177,6 +254,10 @@ impl cainome::cairo_serde::CairoSerde for Course {
             += cainome::cairo_serde::ByteArray::cairo_serialized_size(&course_ipfs_uri);
         let is_suspended = bool::cairo_deserialize(__felts, __offset)?;
         __offset += bool::cairo_serialized_size(&is_suspended);
+        let price = u128::cairo_deserialize(__felts, __offset)?;
+        __offset += u128::cairo_serialized_size(&price);
+        let is_approved = bool::cairo_deserialize(__felts, __offset)?;
+        __offset += bool::cairo_serialized_size(&is_approved);
         Ok(Course {
             owner,
             course_identifier,
@@ -184,6 +265,48 @@ impl cainome::cairo_serde::CairoSerde for Course {
             uri,
             course_ipfs_uri,
             is_suspended,
+            price,
+            is_approved,
+        })
+    }
+}
+#[derive(serde::Serialize, serde::Deserialize)]
+pub struct CourseApproved {
+    pub course_identifier: cainome::cairo_serde::U256,
+}
+impl cainome::cairo_serde::CairoSerde for CourseApproved {
+    type RustType = Self;
+    const SERIALIZED_SIZE: std::option::Option<usize> = None;
+    #[inline]
+    fn cairo_serialized_size(__rust: &Self::RustType) -> usize {
+        let mut __size = 0;
+        __size
+            += cainome::cairo_serde::U256::cairo_serialized_size(
+                &__rust.course_identifier,
+            );
+        __size
+    }
+    fn cairo_serialize(__rust: &Self::RustType) -> Vec<starknet::core::types::Felt> {
+        let mut __out: Vec<starknet::core::types::Felt> = vec![];
+        __out
+            .extend(
+                cainome::cairo_serde::U256::cairo_serialize(&__rust.course_identifier),
+            );
+        __out
+    }
+    fn cairo_deserialize(
+        __felts: &[starknet::core::types::Felt],
+        __offset: usize,
+    ) -> cainome::cairo_serde::Result<Self::RustType> {
+        let mut __offset = __offset;
+        let course_identifier = cainome::cairo_serde::U256::cairo_deserialize(
+            __felts,
+            __offset,
+        )?;
+        __offset
+            += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
+        Ok(CourseApproved {
+            course_identifier,
         })
     }
 }
@@ -252,6 +375,7 @@ pub struct CourseCreated {
     pub name_: cainome::cairo_serde::ByteArray,
     pub symbol: cainome::cairo_serde::ByteArray,
     pub course_ipfs_uri: cainome::cairo_serde::ByteArray,
+    pub is_approved: bool,
 }
 impl cainome::cairo_serde::CairoSerde for CourseCreated {
     type RustType = Self;
@@ -276,6 +400,7 @@ impl cainome::cairo_serde::CairoSerde for CourseCreated {
             += cainome::cairo_serde::ByteArray::cairo_serialized_size(
                 &__rust.course_ipfs_uri,
             );
+        __size += bool::cairo_serialized_size(&__rust.is_approved);
         __size
     }
     fn cairo_serialize(__rust: &Self::RustType) -> Vec<starknet::core::types::Felt> {
@@ -296,6 +421,7 @@ impl cainome::cairo_serde::CairoSerde for CourseCreated {
             .extend(
                 cainome::cairo_serde::ByteArray::cairo_serialize(&__rust.course_ipfs_uri),
             );
+        __out.extend(bool::cairo_serialize(&__rust.is_approved));
         __out
     }
     fn cairo_deserialize(
@@ -338,6 +464,8 @@ impl cainome::cairo_serde::CairoSerde for CourseCreated {
         )?;
         __offset
             += cainome::cairo_serde::ByteArray::cairo_serialized_size(&course_ipfs_uri);
+        let is_approved = bool::cairo_deserialize(__felts, __offset)?;
+        __offset += bool::cairo_serialized_size(&is_approved);
         Ok(CourseCreated {
             course_identifier,
             owner_,
@@ -346,7 +474,92 @@ impl cainome::cairo_serde::CairoSerde for CourseCreated {
             name_,
             symbol,
             course_ipfs_uri,
+            is_approved,
         })
+    }
+}
+#[derive(serde::Serialize, serde::Deserialize)]
+pub struct CoursePriceUpdated {
+    pub course_identifier: cainome::cairo_serde::U256,
+    pub new_price: u128,
+}
+impl cainome::cairo_serde::CairoSerde for CoursePriceUpdated {
+    type RustType = Self;
+    const SERIALIZED_SIZE: std::option::Option<usize> = None;
+    #[inline]
+    fn cairo_serialized_size(__rust: &Self::RustType) -> usize {
+        let mut __size = 0;
+        __size
+            += cainome::cairo_serde::U256::cairo_serialized_size(
+                &__rust.course_identifier,
+            );
+        __size += u128::cairo_serialized_size(&__rust.new_price);
+        __size
+    }
+    fn cairo_serialize(__rust: &Self::RustType) -> Vec<starknet::core::types::Felt> {
+        let mut __out: Vec<starknet::core::types::Felt> = vec![];
+        __out
+            .extend(
+                cainome::cairo_serde::U256::cairo_serialize(&__rust.course_identifier),
+            );
+        __out.extend(u128::cairo_serialize(&__rust.new_price));
+        __out
+    }
+    fn cairo_deserialize(
+        __felts: &[starknet::core::types::Felt],
+        __offset: usize,
+    ) -> cainome::cairo_serde::Result<Self::RustType> {
+        let mut __offset = __offset;
+        let course_identifier = cainome::cairo_serde::U256::cairo_deserialize(
+            __felts,
+            __offset,
+        )?;
+        __offset
+            += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
+        let new_price = u128::cairo_deserialize(__felts, __offset)?;
+        __offset += u128::cairo_serialized_size(&new_price);
+        Ok(CoursePriceUpdated {
+            course_identifier,
+            new_price,
+        })
+    }
+}
+#[derive(serde::Serialize, serde::Deserialize)]
+pub struct CourseRemoved {
+    pub course_identifier: cainome::cairo_serde::U256,
+}
+impl cainome::cairo_serde::CairoSerde for CourseRemoved {
+    type RustType = Self;
+    const SERIALIZED_SIZE: std::option::Option<usize> = None;
+    #[inline]
+    fn cairo_serialized_size(__rust: &Self::RustType) -> usize {
+        let mut __size = 0;
+        __size
+            += cainome::cairo_serde::U256::cairo_serialized_size(
+                &__rust.course_identifier,
+            );
+        __size
+    }
+    fn cairo_serialize(__rust: &Self::RustType) -> Vec<starknet::core::types::Felt> {
+        let mut __out: Vec<starknet::core::types::Felt> = vec![];
+        __out
+            .extend(
+                cainome::cairo_serde::U256::cairo_serialize(&__rust.course_identifier),
+            );
+        __out
+    }
+    fn cairo_deserialize(
+        __felts: &[starknet::core::types::Felt],
+        __offset: usize,
+    ) -> cainome::cairo_serde::Result<Self::RustType> {
+        let mut __offset = __offset;
+        let course_identifier = cainome::cairo_serde::U256::cairo_deserialize(
+            __felts,
+            __offset,
+        )?;
+        __offset
+            += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
+        Ok(CourseRemoved { course_identifier })
     }
 }
 #[derive(serde::Serialize, serde::Deserialize)]
@@ -457,6 +670,46 @@ impl cainome::cairo_serde::CairoSerde for CourseSuspended {
         __offset
             += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
         Ok(CourseSuspended {
+            course_identifier,
+        })
+    }
+}
+#[derive(serde::Serialize, serde::Deserialize)]
+pub struct CourseUnapproved {
+    pub course_identifier: cainome::cairo_serde::U256,
+}
+impl cainome::cairo_serde::CairoSerde for CourseUnapproved {
+    type RustType = Self;
+    const SERIALIZED_SIZE: std::option::Option<usize> = None;
+    #[inline]
+    fn cairo_serialized_size(__rust: &Self::RustType) -> usize {
+        let mut __size = 0;
+        __size
+            += cainome::cairo_serde::U256::cairo_serialized_size(
+                &__rust.course_identifier,
+            );
+        __size
+    }
+    fn cairo_serialize(__rust: &Self::RustType) -> Vec<starknet::core::types::Felt> {
+        let mut __out: Vec<starknet::core::types::Felt> = vec![];
+        __out
+            .extend(
+                cainome::cairo_serde::U256::cairo_serialize(&__rust.course_identifier),
+            );
+        __out
+    }
+    fn cairo_deserialize(
+        __felts: &[starknet::core::types::Felt],
+        __offset: usize,
+    ) -> cainome::cairo_serde::Result<Self::RustType> {
+        let mut __offset = __offset;
+        let course_identifier = cainome::cairo_serde::U256::cairo_deserialize(
+            __felts,
+            __offset,
+        )?;
+        __offset
+            += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
+        Ok(CourseUnapproved {
             course_identifier,
         })
     }
@@ -728,8 +981,13 @@ pub enum Event {
     AdminTransferred(AdminTransferred),
     CourseSuspended(CourseSuspended),
     CourseUnsuspended(CourseUnsuspended),
+    CourseRemoved(CourseRemoved),
     OwnableEvent(OwnableComponentEvent),
     UpgradeableEvent(UpgradeableComponentEvent),
+    CoursePriceUpdated(CoursePriceUpdated),
+    AcquiredCourse(AcquiredCourse),
+    CourseApproved(CourseApproved),
+    CourseUnapproved(CourseUnapproved),
 }
 impl cainome::cairo_serde::CairoSerde for Event {
     type RustType = Self;
@@ -751,11 +1009,20 @@ impl cainome::cairo_serde::CairoSerde for Event {
             Event::CourseUnsuspended(val) => {
                 CourseUnsuspended::cairo_serialized_size(val) + 1
             }
+            Event::CourseRemoved(val) => CourseRemoved::cairo_serialized_size(val) + 1,
             Event::OwnableEvent(val) => {
                 OwnableComponentEvent::cairo_serialized_size(val) + 1
             }
             Event::UpgradeableEvent(val) => {
                 UpgradeableComponentEvent::cairo_serialized_size(val) + 1
+            }
+            Event::CoursePriceUpdated(val) => {
+                CoursePriceUpdated::cairo_serialized_size(val) + 1
+            }
+            Event::AcquiredCourse(val) => AcquiredCourse::cairo_serialized_size(val) + 1,
+            Event::CourseApproved(val) => CourseApproved::cairo_serialized_size(val) + 1,
+            Event::CourseUnapproved(val) => {
+                CourseUnapproved::cairo_serialized_size(val) + 1
             }
             _ => 0,
         }
@@ -798,16 +1065,46 @@ impl cainome::cairo_serde::CairoSerde for Event {
                 temp.extend(CourseUnsuspended::cairo_serialize(val));
                 temp
             }
-            Event::OwnableEvent(val) => {
+            Event::CourseRemoved(val) => {
                 let mut temp = vec![];
                 temp.extend(usize::cairo_serialize(&6usize));
+                temp.extend(CourseRemoved::cairo_serialize(val));
+                temp
+            }
+            Event::OwnableEvent(val) => {
+                let mut temp = vec![];
+                temp.extend(usize::cairo_serialize(&7usize));
                 temp.extend(OwnableComponentEvent::cairo_serialize(val));
                 temp
             }
             Event::UpgradeableEvent(val) => {
                 let mut temp = vec![];
-                temp.extend(usize::cairo_serialize(&7usize));
+                temp.extend(usize::cairo_serialize(&8usize));
                 temp.extend(UpgradeableComponentEvent::cairo_serialize(val));
+                temp
+            }
+            Event::CoursePriceUpdated(val) => {
+                let mut temp = vec![];
+                temp.extend(usize::cairo_serialize(&9usize));
+                temp.extend(CoursePriceUpdated::cairo_serialize(val));
+                temp
+            }
+            Event::AcquiredCourse(val) => {
+                let mut temp = vec![];
+                temp.extend(usize::cairo_serialize(&10usize));
+                temp.extend(AcquiredCourse::cairo_serialize(val));
+                temp
+            }
+            Event::CourseApproved(val) => {
+                let mut temp = vec![];
+                temp.extend(usize::cairo_serialize(&11usize));
+                temp.extend(CourseApproved::cairo_serialize(val));
+                temp
+            }
+            Event::CourseUnapproved(val) => {
+                let mut temp = vec![];
+                temp.extend(usize::cairo_serialize(&12usize));
+                temp.extend(CourseUnapproved::cairo_serialize(val));
                 temp
             }
             _ => vec![],
@@ -864,18 +1161,53 @@ impl cainome::cairo_serde::CairoSerde for Event {
             }
             6usize => {
                 Ok(
+                    Event::CourseRemoved(
+                        CourseRemoved::cairo_deserialize(__felts, __offset + 1)?,
+                    ),
+                )
+            }
+            7usize => {
+                Ok(
                     Event::OwnableEvent(
                         OwnableComponentEvent::cairo_deserialize(__felts, __offset + 1)?,
                     ),
                 )
             }
-            7usize => {
+            8usize => {
                 Ok(
                     Event::UpgradeableEvent(
                         UpgradeableComponentEvent::cairo_deserialize(
                             __felts,
                             __offset + 1,
                         )?,
+                    ),
+                )
+            }
+            9usize => {
+                Ok(
+                    Event::CoursePriceUpdated(
+                        CoursePriceUpdated::cairo_deserialize(__felts, __offset + 1)?,
+                    ),
+                )
+            }
+            10usize => {
+                Ok(
+                    Event::AcquiredCourse(
+                        AcquiredCourse::cairo_deserialize(__felts, __offset + 1)?,
+                    ),
+                )
+            }
+            11usize => {
+                Ok(
+                    Event::CourseApproved(
+                        CourseApproved::cairo_deserialize(__felts, __offset + 1)?,
+                    ),
+                )
+            }
+            12usize => {
+                Ok(
+                    Event::CourseUnapproved(
+                        CourseUnapproved::cairo_deserialize(__felts, __offset + 1)?,
                     ),
                 )
             }
@@ -1015,6 +1347,18 @@ impl TryFrom<starknet::core::types::EmittedEvent> for Event {
                 += cainome::cairo_serde::ByteArray::cairo_serialized_size(
                     &course_ipfs_uri,
                 );
+            let is_approved = match bool::cairo_deserialize(&event.data, data_offset) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}", "is_approved",
+                            "CourseCreated", e
+                        ),
+                    );
+                }
+            };
+            data_offset += bool::cairo_serialized_size(&is_approved);
             return Ok(
                 Event::CourseCreated(CourseCreated {
                     course_identifier,
@@ -1024,6 +1368,7 @@ impl TryFrom<starknet::core::types::EmittedEvent> for Event {
                     name_,
                     symbol,
                     course_ipfs_uri,
+                    is_approved,
                 }),
             );
         }
@@ -1233,6 +1578,31 @@ impl TryFrom<starknet::core::types::EmittedEvent> for Event {
         }
         let selector = event.keys[0];
         if selector
+            == starknet::core::utils::get_selector_from_name("CourseRemoved")
+                .unwrap_or_else(|_| panic!("Invalid selector for {}", "CourseRemoved"))
+        {
+            let mut key_offset = 0 + 1;
+            let mut data_offset = 0;
+            let course_identifier = match cainome::cairo_serde::U256::cairo_deserialize(
+                &event.data,
+                data_offset,
+            ) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}",
+                            "course_identifier", "CourseRemoved", e
+                        ),
+                    );
+                }
+            };
+            data_offset
+                += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
+            return Ok(Event::CourseRemoved(CourseRemoved { course_identifier }));
+        }
+        let selector = event.keys[0];
+        if selector
             == starknet::core::utils::get_selector_from_name("OwnershipTransferred")
                 .unwrap_or_else(|_| {
                     panic!("Invalid selector for {}", "OwnershipTransferred")
@@ -1366,6 +1736,175 @@ impl TryFrom<starknet::core::types::EmittedEvent> for Event {
                 Event::UpgradeableEvent(
                     UpgradeableComponentEvent::Upgraded(Upgraded { class_hash }),
                 ),
+            );
+        }
+        let selector = event.keys[0];
+        if selector
+            == starknet::core::utils::get_selector_from_name("CoursePriceUpdated")
+                .unwrap_or_else(|_| {
+                    panic!("Invalid selector for {}", "CoursePriceUpdated")
+                })
+        {
+            let mut key_offset = 0 + 1;
+            let mut data_offset = 0;
+            let course_identifier = match cainome::cairo_serde::U256::cairo_deserialize(
+                &event.data,
+                data_offset,
+            ) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}",
+                            "course_identifier", "CoursePriceUpdated", e
+                        ),
+                    );
+                }
+            };
+            data_offset
+                += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
+            let new_price = match u128::cairo_deserialize(&event.data, data_offset) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}", "new_price",
+                            "CoursePriceUpdated", e
+                        ),
+                    );
+                }
+            };
+            data_offset += u128::cairo_serialized_size(&new_price);
+            return Ok(
+                Event::CoursePriceUpdated(CoursePriceUpdated {
+                    course_identifier,
+                    new_price,
+                }),
+            );
+        }
+        let selector = event.keys[0];
+        if selector
+            == starknet::core::utils::get_selector_from_name("AcquiredCourse")
+                .unwrap_or_else(|_| panic!("Invalid selector for {}", "AcquiredCourse"))
+        {
+            let mut key_offset = 0 + 1;
+            let mut data_offset = 0;
+            let course_identifier = match cainome::cairo_serde::U256::cairo_deserialize(
+                &event.data,
+                data_offset,
+            ) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}",
+                            "course_identifier", "AcquiredCourse", e
+                        ),
+                    );
+                }
+            };
+            data_offset
+                += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
+            let owner = match cainome::cairo_serde::ContractAddress::cairo_deserialize(
+                &event.data,
+                data_offset,
+            ) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}", "owner",
+                            "AcquiredCourse", e
+                        ),
+                    );
+                }
+            };
+            data_offset
+                += cainome::cairo_serde::ContractAddress::cairo_serialized_size(&owner);
+            let candidate = match cainome::cairo_serde::ContractAddress::cairo_deserialize(
+                &event.data,
+                data_offset,
+            ) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}", "candidate",
+                            "AcquiredCourse", e
+                        ),
+                    );
+                }
+            };
+            data_offset
+                += cainome::cairo_serde::ContractAddress::cairo_serialized_size(
+                    &candidate,
+                );
+            return Ok(
+                Event::AcquiredCourse(AcquiredCourse {
+                    course_identifier,
+                    owner,
+                    candidate,
+                }),
+            );
+        }
+        let selector = event.keys[0];
+        if selector
+            == starknet::core::utils::get_selector_from_name("CourseApproved")
+                .unwrap_or_else(|_| panic!("Invalid selector for {}", "CourseApproved"))
+        {
+            let mut key_offset = 0 + 1;
+            let mut data_offset = 0;
+            let course_identifier = match cainome::cairo_serde::U256::cairo_deserialize(
+                &event.data,
+                data_offset,
+            ) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}",
+                            "course_identifier", "CourseApproved", e
+                        ),
+                    );
+                }
+            };
+            data_offset
+                += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
+            return Ok(
+                Event::CourseApproved(CourseApproved {
+                    course_identifier,
+                }),
+            );
+        }
+        let selector = event.keys[0];
+        if selector
+            == starknet::core::utils::get_selector_from_name("CourseUnapproved")
+                .unwrap_or_else(|_| {
+                    panic!("Invalid selector for {}", "CourseUnapproved")
+                })
+        {
+            let mut key_offset = 0 + 1;
+            let mut data_offset = 0;
+            let course_identifier = match cainome::cairo_serde::U256::cairo_deserialize(
+                &event.data,
+                data_offset,
+            ) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}",
+                            "course_identifier", "CourseUnapproved", e
+                        ),
+                    );
+                }
+            };
+            data_offset
+                += cainome::cairo_serde::U256::cairo_serialized_size(&course_identifier);
+            return Ok(
+                Event::CourseUnapproved(CourseUnapproved {
+                    course_identifier,
+                }),
             );
         }
         Err(format!("Could not match any event from keys {:?}", event.keys))
@@ -1749,6 +2288,25 @@ impl<A: starknet::accounts::ConnectedAccount + Sync> coursesubgraph<A> {
     }
     #[allow(clippy::ptr_arg)]
     #[allow(clippy::too_many_arguments)]
+    pub fn get_course_approval_status(
+        &self,
+        course_identifier: &cainome::cairo_serde::U256,
+    ) -> cainome::cairo_serde::call::FCall<A::Provider, bool> {
+        use cainome::cairo_serde::CairoSerde;
+        let mut __calldata = vec![];
+        __calldata
+            .extend(cainome::cairo_serde::U256::cairo_serialize(course_identifier));
+        let __call = starknet::core::types::FunctionCall {
+            contract_address: self.address,
+            entry_point_selector: starknet::macros::selector!(
+                "get_course_approval_status"
+            ),
+            calldata: __calldata,
+        };
+        cainome::cairo_serde::call::FCall::new(__call, self.provider())
+    }
+    #[allow(clippy::ptr_arg)]
+    #[allow(clippy::too_many_arguments)]
     pub fn get_course_infos(
         &self,
         course_identifiers: &Vec<cainome::cairo_serde::U256>,
@@ -1816,6 +2374,36 @@ impl<A: starknet::accounts::ConnectedAccount + Sync> coursesubgraph<A> {
         let __call = starknet::core::types::FunctionCall {
             contract_address: self.address,
             entry_point_selector: starknet::macros::selector!("get_new_admin"),
+            calldata: __calldata,
+        };
+        cainome::cairo_serde::call::FCall::new(__call, self.provider())
+    }
+    #[allow(clippy::ptr_arg)]
+    #[allow(clippy::too_many_arguments)]
+    pub fn get_price_of_strk_usd(
+        &self,
+    ) -> cainome::cairo_serde::call::FCall<A::Provider, u128> {
+        use cainome::cairo_serde::CairoSerde;
+        let mut __calldata = vec![];
+        let __call = starknet::core::types::FunctionCall {
+            contract_address: self.address,
+            entry_point_selector: starknet::macros::selector!("get_price_of_strk_usd"),
+            calldata: __calldata,
+        };
+        cainome::cairo_serde::call::FCall::new(__call, self.provider())
+    }
+    #[allow(clippy::ptr_arg)]
+    #[allow(clippy::too_many_arguments)]
+    pub fn get_strk_of_usd(
+        &self,
+        usd_price: &u128,
+    ) -> cainome::cairo_serde::call::FCall<A::Provider, u128> {
+        use cainome::cairo_serde::CairoSerde;
+        let mut __calldata = vec![];
+        __calldata.extend(u128::cairo_serialize(usd_price));
+        let __call = starknet::core::types::FunctionCall {
+            contract_address: self.address,
+            entry_point_selector: starknet::macros::selector!("get_strk_of_usd"),
             calldata: __calldata,
         };
         cainome::cairo_serde::call::FCall::new(__call, self.provider())
@@ -2043,6 +2631,7 @@ impl<A: starknet::accounts::ConnectedAccount + Sync> coursesubgraph<A> {
         name_: &cainome::cairo_serde::ByteArray,
         symbol: &cainome::cairo_serde::ByteArray,
         course_ipfs_uri: &cainome::cairo_serde::ByteArray,
+        price: &u128,
     ) -> starknet::core::types::Call {
         use cainome::cairo_serde::CairoSerde;
         let mut __calldata = vec![];
@@ -2054,6 +2643,7 @@ impl<A: starknet::accounts::ConnectedAccount + Sync> coursesubgraph<A> {
         __calldata.extend(cainome::cairo_serde::ByteArray::cairo_serialize(symbol));
         __calldata
             .extend(cainome::cairo_serde::ByteArray::cairo_serialize(course_ipfs_uri));
+        __calldata.extend(u128::cairo_serialize(price));
         starknet::core::types::Call {
             to: self.address,
             selector: starknet::macros::selector!("create_course"),
@@ -2070,6 +2660,7 @@ impl<A: starknet::accounts::ConnectedAccount + Sync> coursesubgraph<A> {
         name_: &cainome::cairo_serde::ByteArray,
         symbol: &cainome::cairo_serde::ByteArray,
         course_ipfs_uri: &cainome::cairo_serde::ByteArray,
+        price: &u128,
     ) -> starknet::accounts::ExecutionV1<A> {
         use cainome::cairo_serde::CairoSerde;
         let mut __calldata = vec![];
@@ -2081,6 +2672,7 @@ impl<A: starknet::accounts::ConnectedAccount + Sync> coursesubgraph<A> {
         __calldata.extend(cainome::cairo_serde::ByteArray::cairo_serialize(symbol));
         __calldata
             .extend(cainome::cairo_serde::ByteArray::cairo_serialize(course_ipfs_uri));
+        __calldata.extend(u128::cairo_serialize(price));
         let __call = starknet::core::types::Call {
             to: self.address,
             selector: starknet::macros::selector!("create_course"),
@@ -2173,6 +2765,43 @@ impl<A: starknet::accounts::ConnectedAccount + Sync> coursesubgraph<A> {
         let __call = starknet::core::types::Call {
             to: self.address,
             selector: starknet::macros::selector!("renounce_ownership"),
+            calldata: __calldata,
+        };
+        self.account.execute_v1(vec![__call])
+    }
+    #[allow(clippy::ptr_arg)]
+    #[allow(clippy::too_many_arguments)]
+    pub fn toggle_course_approval_getcall(
+        &self,
+        course_identifier: &cainome::cairo_serde::U256,
+        approve: &bool,
+    ) -> starknet::core::types::Call {
+        use cainome::cairo_serde::CairoSerde;
+        let mut __calldata = vec![];
+        __calldata
+            .extend(cainome::cairo_serde::U256::cairo_serialize(course_identifier));
+        __calldata.extend(bool::cairo_serialize(approve));
+        starknet::core::types::Call {
+            to: self.address,
+            selector: starknet::macros::selector!("toggle_course_approval"),
+            calldata: __calldata,
+        }
+    }
+    #[allow(clippy::ptr_arg)]
+    #[allow(clippy::too_many_arguments)]
+    pub fn toggle_course_approval(
+        &self,
+        course_identifier: &cainome::cairo_serde::U256,
+        approve: &bool,
+    ) -> starknet::accounts::ExecutionV1<A> {
+        use cainome::cairo_serde::CairoSerde;
+        let mut __calldata = vec![];
+        __calldata
+            .extend(cainome::cairo_serde::U256::cairo_serialize(course_identifier));
+        __calldata.extend(bool::cairo_serialize(approve));
+        let __call = starknet::core::types::Call {
+            to: self.address,
+            selector: starknet::macros::selector!("toggle_course_approval"),
             calldata: __calldata,
         };
         self.account.execute_v1(vec![__call])
@@ -2276,6 +2905,43 @@ impl<A: starknet::accounts::ConnectedAccount + Sync> coursesubgraph<A> {
         let __call = starknet::core::types::Call {
             to: self.address,
             selector: starknet::macros::selector!("transfer_ownership"),
+            calldata: __calldata,
+        };
+        self.account.execute_v1(vec![__call])
+    }
+    #[allow(clippy::ptr_arg)]
+    #[allow(clippy::too_many_arguments)]
+    pub fn update_price_getcall(
+        &self,
+        course_identifier: &cainome::cairo_serde::U256,
+        new_price: &u128,
+    ) -> starknet::core::types::Call {
+        use cainome::cairo_serde::CairoSerde;
+        let mut __calldata = vec![];
+        __calldata
+            .extend(cainome::cairo_serde::U256::cairo_serialize(course_identifier));
+        __calldata.extend(u128::cairo_serialize(new_price));
+        starknet::core::types::Call {
+            to: self.address,
+            selector: starknet::macros::selector!("update_price"),
+            calldata: __calldata,
+        }
+    }
+    #[allow(clippy::ptr_arg)]
+    #[allow(clippy::too_many_arguments)]
+    pub fn update_price(
+        &self,
+        course_identifier: &cainome::cairo_serde::U256,
+        new_price: &u128,
+    ) -> starknet::accounts::ExecutionV1<A> {
+        use cainome::cairo_serde::CairoSerde;
+        let mut __calldata = vec![];
+        __calldata
+            .extend(cainome::cairo_serde::U256::cairo_serialize(course_identifier));
+        __calldata.extend(u128::cairo_serialize(new_price));
+        let __call = starknet::core::types::Call {
+            to: self.address,
+            selector: starknet::macros::selector!("update_price"),
             calldata: __calldata,
         };
         self.account.execute_v1(vec![__call])
@@ -2412,6 +3078,25 @@ impl<P: starknet::providers::Provider + Sync> coursesubgraphReader<P> {
     }
     #[allow(clippy::ptr_arg)]
     #[allow(clippy::too_many_arguments)]
+    pub fn get_course_approval_status(
+        &self,
+        course_identifier: &cainome::cairo_serde::U256,
+    ) -> cainome::cairo_serde::call::FCall<P, bool> {
+        use cainome::cairo_serde::CairoSerde;
+        let mut __calldata = vec![];
+        __calldata
+            .extend(cainome::cairo_serde::U256::cairo_serialize(course_identifier));
+        let __call = starknet::core::types::FunctionCall {
+            contract_address: self.address,
+            entry_point_selector: starknet::macros::selector!(
+                "get_course_approval_status"
+            ),
+            calldata: __calldata,
+        };
+        cainome::cairo_serde::call::FCall::new(__call, self.provider())
+    }
+    #[allow(clippy::ptr_arg)]
+    #[allow(clippy::too_many_arguments)]
     pub fn get_course_infos(
         &self,
         course_identifiers: &Vec<cainome::cairo_serde::U256>,
@@ -2473,6 +3158,34 @@ impl<P: starknet::providers::Provider + Sync> coursesubgraphReader<P> {
         let __call = starknet::core::types::FunctionCall {
             contract_address: self.address,
             entry_point_selector: starknet::macros::selector!("get_new_admin"),
+            calldata: __calldata,
+        };
+        cainome::cairo_serde::call::FCall::new(__call, self.provider())
+    }
+    #[allow(clippy::ptr_arg)]
+    #[allow(clippy::too_many_arguments)]
+    pub fn get_price_of_strk_usd(&self) -> cainome::cairo_serde::call::FCall<P, u128> {
+        use cainome::cairo_serde::CairoSerde;
+        let mut __calldata = vec![];
+        let __call = starknet::core::types::FunctionCall {
+            contract_address: self.address,
+            entry_point_selector: starknet::macros::selector!("get_price_of_strk_usd"),
+            calldata: __calldata,
+        };
+        cainome::cairo_serde::call::FCall::new(__call, self.provider())
+    }
+    #[allow(clippy::ptr_arg)]
+    #[allow(clippy::too_many_arguments)]
+    pub fn get_strk_of_usd(
+        &self,
+        usd_price: &u128,
+    ) -> cainome::cairo_serde::call::FCall<P, u128> {
+        use cainome::cairo_serde::CairoSerde;
+        let mut __calldata = vec![];
+        __calldata.extend(u128::cairo_serialize(usd_price));
+        let __call = starknet::core::types::FunctionCall {
+            contract_address: self.address,
+            entry_point_selector: starknet::macros::selector!("get_strk_of_usd"),
             calldata: __calldata,
         };
         cainome::cairo_serde::call::FCall::new(__call, self.provider())

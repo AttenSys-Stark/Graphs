@@ -200,6 +200,7 @@ impl cainome::cairo_serde::CairoSerde for AttendanceMarked {
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct BootCampCreated {
     pub org_name: cainome::cairo_serde::ByteArray,
+    pub org_address: cainome::cairo_serde::ContractAddress,
     pub bootcamp_name: cainome::cairo_serde::ByteArray,
     pub nft_name: cainome::cairo_serde::ByteArray,
     pub nft_symbol: cainome::cairo_serde::ByteArray,
@@ -215,6 +216,10 @@ impl cainome::cairo_serde::CairoSerde for BootCampCreated {
         let mut __size = 0;
         __size
             += cainome::cairo_serde::ByteArray::cairo_serialized_size(&__rust.org_name);
+        __size
+            += cainome::cairo_serde::ContractAddress::cairo_serialized_size(
+                &__rust.org_address,
+            );
         __size
             += cainome::cairo_serde::ByteArray::cairo_serialized_size(
                 &__rust.bootcamp_name,
@@ -238,6 +243,12 @@ impl cainome::cairo_serde::CairoSerde for BootCampCreated {
     fn cairo_serialize(__rust: &Self::RustType) -> Vec<starknet::core::types::Felt> {
         let mut __out: Vec<starknet::core::types::Felt> = vec![];
         __out.extend(cainome::cairo_serde::ByteArray::cairo_serialize(&__rust.org_name));
+        __out
+            .extend(
+                cainome::cairo_serde::ContractAddress::cairo_serialize(
+                    &__rust.org_address,
+                ),
+            );
         __out
             .extend(
                 cainome::cairo_serde::ByteArray::cairo_serialize(&__rust.bootcamp_name),
@@ -268,6 +279,14 @@ impl cainome::cairo_serde::CairoSerde for BootCampCreated {
             __offset,
         )?;
         __offset += cainome::cairo_serde::ByteArray::cairo_serialized_size(&org_name);
+        let org_address = cainome::cairo_serde::ContractAddress::cairo_deserialize(
+            __felts,
+            __offset,
+        )?;
+        __offset
+            += cainome::cairo_serde::ContractAddress::cairo_serialized_size(
+                &org_address,
+            );
         let bootcamp_name = cainome::cairo_serde::ByteArray::cairo_deserialize(
             __felts,
             __offset,
@@ -304,6 +323,7 @@ impl cainome::cairo_serde::CairoSerde for BootCampCreated {
             );
         Ok(BootCampCreated {
             org_name,
+            org_address,
             bootcamp_name,
             nft_name,
             nft_symbol,
@@ -796,6 +816,7 @@ impl cainome::cairo_serde::CairoSerde for Instructor {
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct InstructorAddedToOrg {
     pub org_name: cainome::cairo_serde::ByteArray,
+    pub org_address: cainome::cairo_serde::ContractAddress,
     pub instructor: Vec<cainome::cairo_serde::ContractAddress>,
 }
 impl cainome::cairo_serde::CairoSerde for InstructorAddedToOrg {
@@ -807,6 +828,10 @@ impl cainome::cairo_serde::CairoSerde for InstructorAddedToOrg {
         __size
             += cainome::cairo_serde::ByteArray::cairo_serialized_size(&__rust.org_name);
         __size
+            += cainome::cairo_serde::ContractAddress::cairo_serialized_size(
+                &__rust.org_address,
+            );
+        __size
             += Vec::<
                 cainome::cairo_serde::ContractAddress,
             >::cairo_serialized_size(&__rust.instructor);
@@ -815,6 +840,12 @@ impl cainome::cairo_serde::CairoSerde for InstructorAddedToOrg {
     fn cairo_serialize(__rust: &Self::RustType) -> Vec<starknet::core::types::Felt> {
         let mut __out: Vec<starknet::core::types::Felt> = vec![];
         __out.extend(cainome::cairo_serde::ByteArray::cairo_serialize(&__rust.org_name));
+        __out
+            .extend(
+                cainome::cairo_serde::ContractAddress::cairo_serialize(
+                    &__rust.org_address,
+                ),
+            );
         __out
             .extend(
                 Vec::<
@@ -833,6 +864,14 @@ impl cainome::cairo_serde::CairoSerde for InstructorAddedToOrg {
             __offset,
         )?;
         __offset += cainome::cairo_serde::ByteArray::cairo_serialized_size(&org_name);
+        let org_address = cainome::cairo_serde::ContractAddress::cairo_deserialize(
+            __felts,
+            __offset,
+        )?;
+        __offset
+            += cainome::cairo_serde::ContractAddress::cairo_serialized_size(
+                &org_address,
+            );
         let instructor = Vec::<
             cainome::cairo_serde::ContractAddress,
         >::cairo_deserialize(__felts, __offset)?;
@@ -842,6 +881,7 @@ impl cainome::cairo_serde::CairoSerde for InstructorAddedToOrg {
             >::cairo_serialized_size(&instructor);
         Ok(InstructorAddedToOrg {
             org_name,
+            org_address,
             instructor,
         })
     }
@@ -2551,6 +2591,24 @@ impl TryFrom<starknet::core::types::EmittedEvent> for Event {
             };
             data_offset
                 += cainome::cairo_serde::ByteArray::cairo_serialized_size(&org_name);
+            let org_address = match cainome::cairo_serde::ContractAddress::cairo_deserialize(
+                &event.data,
+                data_offset,
+            ) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}", "org_address",
+                            "InstructorAddedToOrg", e
+                        ),
+                    );
+                }
+            };
+            data_offset
+                += cainome::cairo_serde::ContractAddress::cairo_serialized_size(
+                    &org_address,
+                );
             let instructor = match Vec::<
                 cainome::cairo_serde::ContractAddress,
             >::cairo_deserialize(&event.keys, key_offset) {
@@ -2571,6 +2629,7 @@ impl TryFrom<starknet::core::types::EmittedEvent> for Event {
             return Ok(
                 Event::InstructorAddedToOrg(InstructorAddedToOrg {
                     org_name,
+                    org_address,
                     instructor,
                 }),
             );
@@ -2650,6 +2709,24 @@ impl TryFrom<starknet::core::types::EmittedEvent> for Event {
             };
             data_offset
                 += cainome::cairo_serde::ByteArray::cairo_serialized_size(&org_name);
+            let org_address = match cainome::cairo_serde::ContractAddress::cairo_deserialize(
+                &event.data,
+                data_offset,
+            ) {
+                Ok(v) => v,
+                Err(e) => {
+                    return Err(
+                        format!(
+                            "Could not deserialize field {} for {}: {:?}", "org_address",
+                            "BootCampCreated", e
+                        ),
+                    );
+                }
+            };
+            data_offset
+                += cainome::cairo_serde::ContractAddress::cairo_serialized_size(
+                    &org_address,
+                );
             let bootcamp_name = match cainome::cairo_serde::ByteArray::cairo_deserialize(
                 &event.data,
                 data_offset,
@@ -2753,6 +2830,7 @@ impl TryFrom<starknet::core::types::EmittedEvent> for Event {
             return Ok(
                 Event::BootCampCreated(BootCampCreated {
                     org_name,
+                    org_address,
                     bootcamp_name,
                     nft_name,
                     nft_symbol,
