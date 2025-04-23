@@ -25,23 +25,23 @@ binaries:
     file: ./target/wasm32-unknown-unknown/release/substreams.wasm
 
 modules:
-- name: map_orgsubgraph_events
+- name: map_coursesubgraph_events
   kind: map
-  initialBlock: 680374
+  initialBlock: 680370
   inputs:
     - map: starknet:filtered_transactions
   output:
    type: proto:starknet.v1.Events
 - name: map_eventsubgraph_events
   kind: map
-  initialBlock: 680372
+  initialBlock: 715446
   inputs:
     - map: starknet:filtered_transactions
   output:
    type: proto:starknet.v1.Events
-- name: map_coursesubgraph_events
+- name: map_orgsubgraph_events
   kind: map
-  initialBlock: 680370
+  initialBlock: 715448
   inputs:
     - map: starknet:filtered_transactions
   output:
@@ -50,4 +50,4 @@ modules:
 network: starknet-testnet
 
 params:
-  starknet:filtered_transactions: ev:from_address:0x0646f8f39ea645470a85edbee5cae24c37d8b0c524e7abed04bb98d858c89c0a || ev:from_address:0x0699e49b9b193554ceed38ef9477f771f2cd3a65a71832ea342ba63540d736cb || ev:from_address:0x02d876f20d2ed89f91ca59e559e954dc78a4e81abd6bf7831ef238a2adfbef24
+  starknet:filtered_transactions: ev:from_address:0x02d876f20d2ed89f91ca59e559e954dc78a4e81abd6bf7831ef238a2adfbef24 || ev:from_address:0x0699e49b9b193554ceed38ef9477f771f2cd3a65a71832ea342ba63540d736cb || ev:from_address:0x0646f8f39ea645470a85edbee5cae24c37d8b0c524e7abed04bb98d858c89c0a
